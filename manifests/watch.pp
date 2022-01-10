@@ -49,7 +49,7 @@ define consul_template::watch (
     $config_base = {
       consul => 'localhost:8500',
     }
-    $_config_hash = deep_merge(config_base, $consul_template::config_defaults, $consul_template::config_hash)
+    $_config_hash = deep_merge($config_base, $consul_template::config_defaults, $consul_template::config_hash)
 
     # Using our parent module's pretty_config & pretty_config_indent just because
     $content_full = consul_template::sorted_json($_config_hash, $consul_template::pretty_config, $consul_template::pretty_config_indent)
