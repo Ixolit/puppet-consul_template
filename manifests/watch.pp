@@ -56,7 +56,7 @@ define consul_template::watch (
     # remove the closing }
     $content_main = regsubst($content_main_full, '}$', '')
 
-    concat::fragment { 'consul-service-pre':
+    concat::fragment { "consul-service-pre-${instance_name}":
       target  => $concat_name,
       # add the opening template array so that we can insert watch fragments
       content => "${content_main},\n    \"template\": [\n",
@@ -67,20 +67,11 @@ define consul_template::watch (
     # more template configs.
     Concat::Fragment <| target == $concat_name |>
 
-    concat::fragment { 'consul-service-post':
+    concat::fragment { "consul-service-pre-${instance_name}":
       target  => $concat_name,
       # close off the template array and the whole object
       content => "    ]\n}",
       order   => '99',
-    }
-
-    file { $consul_template::config_dir:
-      ensure  => 'directory',
-      purge   => true,
-      recurse => true,
-      owner   => $consul_template::user,
-      group   => $consul_template::group,
-      mode    => '0755',
     }
   }
 
@@ -100,7 +91,7 @@ define consul_template::watch (
     $fragment_requires = undef
   } else {
     # source is specified as a template
-    $source = "${consul_template::config_dir}/${name}.ctmpl"
+    $source = "${consul_template::config_dir}/${instance_name}/${name}.ctmpl"
     $config_source = {
       source => $source,
     }
