@@ -49,17 +49,17 @@ define consul_template::watch (
     $config_base = {
       consul => 'localhost:8500',
     }
-    $_config_hash = deep_merge($config_base, $consul_template::config_defaults, $consul_template::config_hash)
+    $_config_main_hash = deep_merge($config_base, $consul_template::config_defaults, $consul_template::config_hash)
 
     # Using our parent module's pretty_config & pretty_config_indent just because
-    $content_full = consul_template::sorted_json($_config_hash, $consul_template::pretty_config, $consul_template::pretty_config_indent)
+    $content_main_full = consul_template::sorted_json($_config_main_hash, $consul_template::pretty_config, $consul_template::pretty_config_indent)
     # remove the closing }
-    $content = regsubst($content_full, '}$', '')
+    $content_main = regsubst($content_main_full, '}$', '')
 
     concat::fragment { 'consul-service-pre':
       target  => $concat_name,
       # add the opening template array so that we can insert watch fragments
-      content => "${content},\n    \"template\": [\n",
+      content => "${content_main},\n    \"template\": [\n",
       order   => '1',
     }
 
