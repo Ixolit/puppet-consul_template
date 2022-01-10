@@ -43,7 +43,7 @@ define consul_template::watch (
       owner  => $consul_template::user,
       group  => $consul_template::group,
       mode   => $consul_template::config_mode,
-      notify => Service['consul-template-${instance_name}'],
+      notify => Service["consul-template-${instance_name}"],
     }
 
     $config_base = {
