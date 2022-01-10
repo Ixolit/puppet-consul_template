@@ -15,19 +15,19 @@ define consul_template::watch (
   $concat_name = "consul-template/${instance_name}/config.json"
 
   # Check if consul service already exists.. if not, create it
-  if !File["/lib/systemd/system/consul-template-{$instance_name}.service"] {
-    file { "/lib/systemd/system/consul-template-{$instance_name}.service":
+  if !File["/lib/systemd/system/consul-template-${instance_name}.service"] {
+    file { "/lib/systemd/system/consul-template-${instance_name}.service":
       mode    => '0644',
       owner   => 'root',
       group   => 'root',
       content => template('consul_template/consul-template.systemd.erb'),
     }
 
-    service { "consul-template-{$instance_name}":
+    service { "consul-template-${instance_name}":
       ensure   => $consul_template::service_ensure,
       enable   => $consul_template::service_enable,
       provider => $service_provider,
-      name     => "consul-template-{$instance_name}",
+      name     => "consul-template-${instance_name}",
     }
 
     file { ["${consul_template::config_dir}/${instance_name}", "${consul_template::config_dir}/${instance_name}/config"]:
@@ -43,7 +43,7 @@ define consul_template::watch (
       owner  => $consul_template::user,
       group  => $consul_template::group,
       mode   => $consul_template::config_mode,
-      notify => Service['consul-template-{$instance_name}'],
+      notify => Service['consul-template-${instance_name}'],
     }
 
     $config_base = {
