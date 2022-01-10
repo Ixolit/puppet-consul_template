@@ -111,7 +111,7 @@ define consul_template::watch (
       group   => $consul_template::group,
       mode    => $consul_template::config_mode,
       content => template($template),
-      notify  => Service['consul-template'],
+      notify  => Service["consul-template-${instance_name}"],
     }
 
     $frag_name = $source
@@ -128,7 +128,7 @@ define consul_template::watch (
     # array. That won't pass strict JSON parsing, but luckily HCL is fine with it.
     content => "      ${content},\n",
     order   => '50',
-    notify  => Service['consul-template'],
+    notify  => Service["consul-template-${instance_name}"],
     require => $fragment_requires,
   }
 }

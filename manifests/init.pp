@@ -94,4 +94,9 @@ class consul_template (
   Class['consul_template::install']
   -> Class['consul_template::logrotate']
 
+  # Remove old service file:
+  file { '/lib/systemd/system/consul-template.service':
+    ensure => absent
+  }
+
 }
