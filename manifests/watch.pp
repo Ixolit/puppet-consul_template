@@ -15,7 +15,7 @@ define consul_template::watch (
   $concat_name = "consul-template/${instance_name}/config.json"
 
   # Check if consul service already exists.. if not, create it
-  if !File["/lib/systemd/system/consul-template-${instance_name}.service"] {
+  if !defined(File["/lib/systemd/system/consul-template-${instance_name}.service"]) {
     file { "/lib/systemd/system/consul-template-${instance_name}.service":
       mode    => '0644',
       owner   => 'root',
