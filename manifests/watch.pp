@@ -67,7 +67,7 @@ define consul_template::watch (
     # more template configs.
     Concat::Fragment <| target == $concat_name |>
 
-    concat::fragment { "consul-service-pre-${instance_name}":
+    concat::fragment { "consul-service-post-${instance_name}":
       target  => $concat_name,
       # close off the template array and the whole object
       content => "    ]\n}",
