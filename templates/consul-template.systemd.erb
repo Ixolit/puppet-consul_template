@@ -7,7 +7,7 @@ After=basic.target network.target
 User=<%= scope.lookupvar('consul_template::user') %>
 Group=<%= scope.lookupvar('consul_template::group') %>
 ExecStart=<%= scope.lookupvar('consul_template::bin_dir') %>/consul-template \
-  -config <%= scope.lookupvar('consul_template::config_dir') %>/<%= @service_name %>/config <%= scope.lookupvar('consul_template::extra_options') %>
+  -config <%= scope.lookupvar('consul_template::config_dir') %>/<%= @instance_name %>/config <%= scope.lookupvar('consul_template::extra_options') %>
 SuccessExitStatus=12
 ExecReload=/bin/kill -SIGHUP $MAINPID
 ExecStop=/bin/kill -SIGINT $MAINPID

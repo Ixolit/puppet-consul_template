@@ -7,10 +7,17 @@ class consul_template::install {
       ensure => 'directory',
       owner  => $consul_template::user,
       group  => $consul_template::group,
-      purge   => true,
-      recurse => true,
       mode   => '0755',
     }
+  }
+
+  file { "${consul_template::config_dir}":
+    ensure  => 'directory',
+    purge   => true,
+    recurse => true,
+    owner   => $consul_template::user,
+    group   => $consul_template::group,
+    mode    => '0755',
   }
 
   if $consul_template::install_method == 'url' {
