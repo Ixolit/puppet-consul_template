@@ -26,7 +26,6 @@ define consul_template::watch (
     service { "consul-template-${instance_name}":
       ensure   => $consul_template::service_ensure,
       enable   => $consul_template::service_enable,
-      provider => $service_provider,
       name     => "consul-template-${instance_name}",
     }
 
@@ -65,7 +64,7 @@ define consul_template::watch (
 
     # Realizes concat::fragments from consul_template::watches that make up 1 or
     # more template configs.
-    #Concat::Fragment <| target == $concat_name |>
+    Concat::Fragment <| target == $concat_name |>
 
     concat::fragment { "consul-service-post-${instance_name}":
       target  => $concat_name,
