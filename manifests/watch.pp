@@ -120,6 +120,6 @@ define consul_template::watch (
     content => "      ${content},\n",
     order   => '50',
     notify  => Service["consul-template-${instance_name}"],
-    require => $fragment_requires,
+    #require => $fragment_requires,
   }
 }
