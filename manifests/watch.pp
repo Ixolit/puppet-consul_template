@@ -65,7 +65,7 @@ define consul_template::watch (
 
     # Realizes concat::fragments from consul_template::watches that make up 1 or
     # more template configs.
-    Concat::Fragment <| target == $concat_name |>
+    #Concat::Fragment <| target == $concat_name |>
 
     concat::fragment { "consul-service-post-${instance_name}":
       target  => $concat_name,
