@@ -15,6 +15,7 @@ class consul_template::install {
     ensure  => 'directory',
     purge   => true,
     recurse => true,
+    force   => true,
     owner   => $consul_template::user,
     group   => $consul_template::group,
     mode    => '0755',
