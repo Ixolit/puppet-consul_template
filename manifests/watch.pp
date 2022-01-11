@@ -26,7 +26,6 @@ define consul_template::watch (
     service { "consul-template-${instance_name}":
       ensure   => $consul_template::service_ensure,
       enable   => $consul_template::service_enable,
-      provider => $service_provider,
       name     => "consul-template-${instance_name}",
     }
 
