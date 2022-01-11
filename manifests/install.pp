@@ -7,6 +7,8 @@ class consul_template::install {
       ensure => 'directory',
       owner  => $consul_template::user,
       group  => $consul_template::group,
+      purge   => true,
+      recurse => true,
       mode   => '0755',
     }
   }

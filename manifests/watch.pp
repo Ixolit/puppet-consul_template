@@ -14,7 +14,7 @@ define consul_template::watch (
 
   $concat_name = "consul-template/${instance_name}/config.json"
 
-  # Check if consul service already exists.. if not, create it
+  # Check if consul instance already exists.. if not, create it
   if !defined(File["/lib/systemd/system/consul-template-${instance_name}.service"]) {
     file { "/lib/systemd/system/consul-template-${instance_name}.service":
       mode    => '0644',
@@ -114,12 +114,12 @@ define consul_template::watch (
   $content = regsubst(regsubst($content_full, "}\n$", '}'), "\n", "\n    ", 'G')
 
   @concat::fragment { $frag_name:
-    target  => 'consul-template/config.json',
+    target  => $concat_name,
     # NOTE: this will result in all watches having , after them in the JSON
     # array. That won't pass strict JSON parsing, but luckily HCL is fine with it.
     content => "      ${content},\n",
     order   => '50',
     notify  => Service["consul-template-${instance_name}"],
-    #require => $fragment_requires,
+    require => $fragment_requires,
   }
 }
