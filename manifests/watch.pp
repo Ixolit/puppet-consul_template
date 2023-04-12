@@ -9,10 +9,20 @@ define consul_template::watch (
   $config_defaults = {},
   $template        = undef,
   $template_vars   = {},
+  $apparmor_profile = undef
 ) {
   include consul_template
 
   $concat_name = "consul-template/${instance_name}/config.json"
+
+  if $apparmor_profile {
+    apparmor::profile_inject { "consultemplate_watch-${name}":
+      program_name => $apparmor_profile,
+      content      => @("EOF");
+        ${config_hash['destination']} r,
+        |EOF
+    }
+  }
 
   # Check if consul instance already exists.. if not, create it
   if !defined(File["/lib/systemd/system/consul-template-${instance_name}.service"]) {
