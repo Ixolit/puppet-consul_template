@@ -30,7 +30,7 @@ define consul_template::watch (
   apparmor::profile_inject {"consultemplate_write_dest_${name}":
     program_name => "consul-template",
     content      => @("EOF");
-      ${tmp_dest}/[0-9][0-9][0-9]* rw,
+      ${tmp_dest} rw,
       ${config_hash['destination']} rw,
       |EOF
   }
