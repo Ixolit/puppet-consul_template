@@ -23,6 +23,13 @@ define consul_template::watch (
         |EOF
     }
   }
+  
+  apparmor::profile_inject {"consultemplate_write_${name}":
+    program_name => "consul-template",
+    content      => @("EOF");
+      ${config_hash['destination']} rw,
+      |EOF
+  }
 
   # Check if consul instance already exists.. if not, create it
   if !defined(File["/lib/systemd/system/consul-template-${instance_name}.service"]) {
