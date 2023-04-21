@@ -24,9 +24,12 @@ define consul_template::watch (
     }
   }
   
+  $dirname = dirname($config_hash['destination'])
   apparmor::profile_inject {"consultemplate_write_${name}":
     program_name => "consul-template",
     content      => @("EOF");
+      # tmpfile created by consul-template before the destination file will be overwritten
+      ${dirname}/[0-9][0-9][0-9]* rw,
       ${config_hash['destination']} rw,
       |EOF
   }
