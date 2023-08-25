@@ -27,12 +27,14 @@ define consul_template::watch (
   $dirname = dirname($config_hash['destination'])
   # tmpfile created by consul-template before the destination file will be overwritten
   $tmp_dest = "${dirname}/[0-9][0-9][0-9]*"
-  apparmor::profile_inject {"consultemplate_write_dest_${name}":
-    program_name => "consul-template",
-    content      => @("EOF");
-      ${tmp_dest} rw,
-      ${config_hash['destination']} rw,
-      |EOF
+  if $::consul_template::apparmor {
+    apparmor::profile_inject {"consultemplate_write_dest_${name}":
+      program_name => "consul-template",
+      content      => @("EOF");
+        ${tmp_dest} rw,
+        ${config_hash['destination']} rw,
+        |EOF
+    }
   }
 
   # Check if consul instance already exists.. if not, create it
