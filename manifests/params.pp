@@ -7,7 +7,7 @@ class consul_template::params {
 
   $os = downcase($facts['kernel'])
 
-  case $::factsfacts['os']['architecture'] {
+  case $::facts['os']['architecture'] {
     'x86_64', 'amd64': {
       $arch = 'amd64'
     }
