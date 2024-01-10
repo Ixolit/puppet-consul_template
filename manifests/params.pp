@@ -7,7 +7,7 @@ class consul_template::params {
 
   $os = downcase($facts['kernel'])
 
-  case $facts['architecture'] {
+  case $::factsfacts['os']['architecture'] {
     'x86_64', 'amd64': {
       $arch = 'amd64'
     }
@@ -17,7 +17,7 @@ class consul_template::params {
     }
 
     default:           {
-      fail("Unsupported kernel architecture: ${facts['architecture']}")
+      fail("Unsupported kernel architecture: ${::facts['os']['architecture']}")
     }
   }
 
